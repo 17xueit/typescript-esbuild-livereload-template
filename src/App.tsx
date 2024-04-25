@@ -10,6 +10,10 @@ export const App = () => {
 			/>
 			<h1>Hello from React &lt;App&gt;</h1>
 			<span>Edit src/App.tsx</span>
+			<input
+				className='bg-purple-300 px-6 py-2 placeholder:text-gray-500'
+				placeholder='Input your name!'
+			/>
 		</StrictMode>
 	);
 };
