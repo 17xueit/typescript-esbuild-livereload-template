@@ -39,7 +39,33 @@ class Compiler {
 	stopLiveServer() {
 		liveServer.shutdown();
 	}
+	/** @private */
+	constructor({ env }) {
+		this.env = env;
+	}
 
+	startLiveServer(openBrowser) {
+		liveServer.start({ ...params, ...{ open: openBrowser } });
+	}
+
+	stopLiveServer() {
+		liveServer.shutdown();
+	}
+
+	/** @private */
+	buildConfig() {
+		return this.env === 'dev'
+			? {
+					define: { 'process.env.NODE_ENV': '"development"' },
+					minify: false,
+					target: 'esnext',
+			  }
+			: {
+					define: { 'process.env.NODE_ENV': '"production"' },
+					minify: true,
+					target: 'es2020',
+			  };
+	}
 	/** @private */
 	buildConfig() {
 		return this.env === 'dev'
@@ -91,7 +117,28 @@ class Compiler {
 			...this.buildConfig(),
 		});
 	}
+	/** @private */
+	async buildTypeScript() {
+		await build({
+			entryPoints: ['./src/index.tsx'],
+			bundle: true,
+			outfile: './dist/index.js',
+			platform: 'browser',
+			format: 'iife',
+			charset: 'utf8',
+			logLevel: 'info',
+			...this.buildConfig(),
+		});
+	}
 
+	async build() {
+		await fse.emptyDir('./dist');
+		await Promise.all([
+			this.copyStaticAssets(),
+			this.buildTailwind(),
+			this.buildTypeScript(),
+		]);
+	}
 	async build() {
 		await fse.emptyDir('./dist');
 		await Promise.all([
@@ -123,6 +170,7 @@ const compiler = new Compiler({ env: env });
 await compiler.build();
 
 if (mode === 'watch') {
+	compiler.watch();
 	compiler.watch();
 }
 

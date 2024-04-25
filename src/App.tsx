@@ -3,7 +3,7 @@ import { StrictMode } from 'react';
 export const App = () => {
 	return (
 		<StrictMode>
-			<p>This serve is run parallism!!</p>
+			<p>This serve is run parallism!!!</p>
 			<img
 				src='./img/react.svg'
 				className='react-logo'
@@ -11,7 +11,7 @@ export const App = () => {
 			<h1>Hello from React &lt;App&gt;</h1>
 			<span>Edit src/App.tsx</span>
 			<input
-				className='bg-orange-400 rounded-sm shadow-sm px-6 py-2 placeholder:text-gray-500'
+				className='bg-purple-300 px-6 py-2 placeholder:text-gray-500'
 				placeholder='Input your name!'
 			/>
 		</StrictMode>
